@@ -20,6 +20,7 @@ defmodule WalkaroundWeb.Router do
 
     get "/", PageController, :home
     live "/test", CounterLive
+    live "/transitions_test", TransitionsTestLive
   end
 
   # Other scopes may use custom stacks.
