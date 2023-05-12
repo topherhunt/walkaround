@@ -2,8 +2,8 @@ import Config
 
 # Configure your database
 config :walkaround, Walkaround.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "topherhunt",
+  password: "",
   hostname: "localhost",
   database: "walkaround_dev",
   stacktrace: true,

@@ -1,5 +1,6 @@
 defmodule WalkaroundWeb.Router do
   use WalkaroundWeb, :router
+  import Phoenix.LiveView.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -18,6 +19,7 @@ defmodule WalkaroundWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/test", CounterLive
   end
 
   # Other scopes may use custom stacks.
