@@ -4,3 +4,135 @@
 @import "bootstrap";
 
 /* This file is for your main application CSS */
+
+/*
+  Transition classes
+*/
+
+/* .image-initial {
+  position: relative;
+  left: -50;
+  top: 0;
+  opacity: 0%;
+}
+
+.transition-turn-left {
+  position: relative;
+  left: 0%;
+  opacity: 100%;
+  transition: left 500ms ease-in, opacity 500ms ease-in;
+}
+
+.transition-turn-right {
+  position: relative;
+  left: 0%;
+  opacity: 100%;
+  transition: left 500ms ease-in, opacity 500ms ease-in;
+} */
+
+/* .start-from-left {
+  left: -50%;
+  opacity: 0;
+}
+
+.start-from-right {
+  left: 50%;
+  opacity: 0;
+}
+
+.image-final {
+  position: relative;
+  left: 0;
+  opacity: 100%;
+  transition: left 500ms ease-in, opacity 500ms ease-in;
+} */
+
+@keyframes animateTurnLeft {
+  0% { opacity: 0; left: -50%; }
+  100% { opacity: 1; left: 0; }
+}
+
+@keyframes animateTurnRight {
+  0% { opacity: 0; left: 50%; }
+  100% { opacity: 1; left: 0; }
+}
+
+@keyframes animateZoomIn {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes animateZoomOut {
+  0% { opacity: 0; transform: scale(2); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes animateLookUp {
+  0% { opacity: 0; top: -50%; }
+  100% { opacity: 1; top: 0; }
+}
+
+@keyframes animateLookDown {
+  0% { opacity: 0; top: 50%; }
+  100% { opacity: 1; top: 0; }
+}
+
+.animate-turn-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  animation-name: animateTurnLeft;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.animate-turn-right {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  animation-name: animateTurnRight;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.animate-zoom-in {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  animation-name: animateZoomIn;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.animate-zoom-out {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  animation-name: animateZoomOut;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.animate-look-up {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  animation-name: animateLookUp;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.animate-look-down {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  animation-name: animateLookDown;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}

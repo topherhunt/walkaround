@@ -19,8 +19,10 @@ defmodule WalkaroundWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
     live "/test", CounterLive
     live "/transitions_test", TransitionsTestLive
+    live "/upload_test", UploadTestLive
   end
 
   # Other scopes may use custom stacks.

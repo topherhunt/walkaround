@@ -1,0 +1,73 @@
+<div class="mx-auto" style="max-width: 800px;">
+  <div class="row">
+    <div class="col-6">
+      <h3 class="text-danger">RED upload</h3>
+
+      <div style="height: 100px; border: 1px solid red;" phx-drop-target={@uploads.image_red.ref}>
+        RED target
+      </div>
+      Status:
+      <%= for entry <- @uploads.image_red.entries do %>
+        <.live_img_preview entry={entry} />
+        <em><%= entry.client_name %></em>
+        <progress value={entry.progress} max="100"><%= entry.progress %>%</progress> <%= entry.progress %>%
+        <button
+          type="button"
+          phx-click="cancel-upload"
+          phx-value-ref={entry.ref}
+          phx-value-type="red"
+          class="text-warning"
+        >
+          Cancel
+        </button>
+        <%= for err <- upload_errors(@uploads.image_red, entry) do %>
+          <p class="alert alert-danger">Error: <%= inspect(err) %></p>
+        <% end %>
+      <% end %>
+
+      <%= for err <- upload_errors(@uploads.image_red) do %>
+        <p class="alert alert-danger"><%= inspect(err) %></p>
+      <% end %>
+    </div>
+
+    <div class="col-6">
+      <h3 class="text-primary">BLUE upload</h3>
+
+      <div
+        style="height: 100px; border: 1px solid blue;"
+        phx-drop-target={@uploads.image_blue.ref}
+      >
+        BLUE target
+      </div>
+      Status:
+      <%= for entry <- @uploads.image_blue.entries do %>
+        <.live_img_preview entry={entry} />
+        <em><%= entry.client_name %></em>
+        <progress value={entry.progress} max="100"><%= entry.progress %>%</progress> <%= entry.progress %>%
+        <button
+          type="button"
+          phx-click="cancel-upload"
+          phx-value-ref={entry.ref}
+          phx-value-type="blue"
+          class="text-warning"
+        >
+          Cancel
+        </button>
+        <%= for err <- upload_errors(@uploads.image_blue, entry) do %>
+          <p class="alert alert-danger">Error: <%= inspect(err) %></p>
+        <% end %>
+      <% end %>
+
+      <%= for err <- upload_errors(@uploads.image_blue) do %>
+        <p class="alert alert-danger"><%= inspect(err) %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <hr />
+
+  <form id="image-upload-form" phx-submit="save" phx-change="validate-image-upload">
+    <.live_file_input upload={@uploads.image_red} />
+    <.live_file_input upload={@uploads.image_blue} />
+  </form>
+</div>
