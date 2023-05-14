@@ -1,12 +1,24 @@
 <body>
-  <h1>Test plain HTML page</h1>
+  <h1>Test progressive image rendering</h1>
 
-  <div>A div</div>
-  <p>A paragraph</p>
-  <ul>
-    <li>A bulleted list</li>
-    <li>Another item</li>
-  </ul>
-
-  <button>A button</button>
+  <div
+    style="
+      width: 100%;
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      border: 1px solid blue;
+    "
+  >
+    <img
+      id="img-640"
+      src="/images/views_test/2n-640.webp"
+      style="position: absolute; width: 100%; z-index: 1"
+    />
+    <img
+      id="img-full"
+      src="/images/views_test/2n.jpg"
+      style="position: absolute; width: 100%; z-index: 2"
+    />
+  </div>
 </body>

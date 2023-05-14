@@ -1,20 +1,50 @@
-<div class="pt-3">
-  <div class="mx-auto position-relative" style="width: 500px; overflow: hidden;">
-    <img
-      id="current_image"
-      src={~p"/images/views_test/#{"#{@current_view}.jpg"}"}
-      class="w-100 position-absolute"
-      data-animation-class={@animation_class}
-      phx-hook="RunAnimation"
-    />
+<div class="">
+  <div class="mx-auto position-relative" style="width: 100%; overflow: hidden; aspect-ratio: 4/3; background-color: black;">
+    <div id="current_image" style="width: 100%; position: absolute; top: 0; left: 0;" phx-hook="RunAnimation" data-animation-class={@animation_class}>
+      <div class="position: relative; width: 100%; aspect-ratio: 4/3;">
+        <img
+          id="current_image_120"
+          src={~p"/images/views_test/#{"#{@current_view}-120.webp"}"}
+          style="position: absolute; width: 100%; z-index: 1"
+        />
+        <img
+          id="current_image_full"
+          src={~p"/images/views_test/#{"#{@current_view}-1600.webp"}"}
+          style="position: absolute; width: 100%; z-index: 2"
+        />
+      </div>
+    </div>
     <img
       id="previous_image"
-      src={~p"/images/views_test/#{"#{@previous_view}.jpg"}"}
+      src={~p"/images/views_test/#{"#{@previous_view}-1600.webp"}"}
       class="w-100"
     />
   </div>
 
   <div class="pt-1"></div>
+
+  <div>
+    <%= for view <- @all_views do %>
+      <a
+        class="btn btn-info"
+        phx-click="go_to_view"
+        phx-value-view={view}
+        phx-value-animation-class="animate-zoom-in"
+        style="cursor: n-resize"
+      >
+        <%= view %>
+      </a>
+    <% end %>
+  </div>
+
+  <%# Preload ALL thumbnails %>
+  <div style="display: none;">
+    <%= for view <- @all_views do %>
+      <img src={~p"/images/views_test/#{"#{view}-120.webp"}"}>
+    <% end %>
+  </div>
+
+
   <table class="mx-auto">
     <tr>
       <td></td>

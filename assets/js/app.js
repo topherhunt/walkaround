@@ -22,16 +22,23 @@ import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 
+let queuedAnimation = () => {};
+
 let Hooks = {
   RunAnimation: {
+    mounted() {},
     updated() {
+      // Clear and re-set the image src so the browser knows to stop displaying the old src.
+      // (The thumbnail will cover while the full image src is loading.)
+      const currentImageFull = document.getElementById("current_image_full");
+      const src = currentImageFull.src;
+      currentImageFull.src = "";
+      currentImageFull.src = src;
+
+      // Remove & re-apply the animation class to trigger the correct animation
       const animationClass = this.el.getAttribute("data-animation-class") || "";
-      console.log(
-        "RunAnimation.updated() running with animationClass: '" +
-          animationClass +
-          "'"
-      );
-      this.el.classList.remove(
+      const currentImageDiv = document.getElementById("current_image");
+      currentImageDiv.classList.remove(
         "animate-turn-left",
         "animate-turn-right",
         "animate-zoom-in",
@@ -39,15 +46,13 @@ let Hooks = {
         "animate-look-up",
         "animate-look-down"
       );
-      void this.el.offsetWidth;
-      this.el.classList.add(animationClass);
+      void currentImageDiv.offsetWidth;
+      currentImageDiv.classList.add(animationClass);
     },
   },
 };
 
-let csrfToken = document
-  .querySelector("meta[name='csrf-token']")
-  .getAttribute("content");
+let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
   hooks: Hooks,
   params: { _csrf_token: csrfToken },
