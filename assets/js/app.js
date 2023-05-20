@@ -50,6 +50,14 @@ let Hooks = {
       currentImageDiv.classList.add(animationClass);
     },
   },
+  ImageUploadFormAutoSubmit: {
+    mounted() {},
+    updated() {
+      if (this.el.getAttribute("data-progress") == 100) {
+        this.pushEvent("submit-form", {});
+      }
+    },
+  },
 };
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");

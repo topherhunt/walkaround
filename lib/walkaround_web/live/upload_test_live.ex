@@ -11,6 +11,7 @@ defmodule WalkaroundWeb.UploadTestLive do
     {:ok, socket}
   end
 
+  # This callback is required even if it's a no-op.
   def handle_event("validate-image-upload", _params, socket) do
     {:noreply, socket}
   end
@@ -25,19 +26,21 @@ defmodule WalkaroundWeb.UploadTestLive do
     {:noreply, cancel_upload(socket, field, ref)}
   end
 
-  # def handle_event("go_to_view", params, socket) do
-  #   view = params["view"]
-  #   animation_class = params["animation-class"]
+  # Detect form submit, and process / persist each uploaded file (or at least, just the RED image)
+  def handle_event("submit-form", _params, socket) do
+    IO.inspect(socket.assigns.uploads, label: "uploads")
 
-  #   socket =
-  #     assign(socket, %{
-  #       previous_view: socket.assigns.current_view,
-  #       current_view: view,
-  #       animation_class: animation_class
-  #     })
+    uploaded_files =
+      consume_uploaded_entries(socket, :image_red, fn %{path: path}, entry ->
+        IO.inspect(path, label: "path")
+        IO.inspect(entry, label: "file entry")
+        dest = Path.join([:code.priv_dir(:walkaround), "static", "uploads", entry.client_name])
+        # The `static/uploads` directory must exist for `File.cp!/2`
+        # and MyAppWeb.static_paths/0 should contain uploads to work,.
+        File.cp!(path, dest)
+        {:ok, ~p"/uploads/#{Path.basename(dest)}"} |> IO.inspect()
+      end)
 
-  #   # IO.puts("Animation: #{socket.assigns.animation}")
-
-  #   {:noreply, socket}
-  # end
+    {:noreply, update(socket, :uploaded_files, &(&1 ++ uploaded_files))}
+  end
 end

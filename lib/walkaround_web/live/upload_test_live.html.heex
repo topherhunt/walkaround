@@ -20,9 +20,17 @@
         >
           Cancel
         </button>
+
         <%= for err <- upload_errors(@uploads.image_red, entry) do %>
           <p class="alert alert-danger">Error: <%= inspect(err) %></p>
         <% end %>
+
+        <div
+          id="autosubmit-checker-div"
+          data-progress={entry.progress}
+          phx-hook="ImageUploadFormAutoSubmit"
+        >
+        </div>
       <% end %>
 
       <%= for err <- upload_errors(@uploads.image_red) do %>
@@ -66,8 +74,9 @@
 
   <hr />
 
-  <form id="image-upload-form" phx-submit="save" phx-change="validate-image-upload">
+  <form id="image-upload-form" phx-submit="submit-form" phx-change="validate-image-upload">
     <.live_file_input upload={@uploads.image_red} />
     <.live_file_input upload={@uploads.image_blue} />
+    <input type="submit" class="btn btn-primary" />
   </form>
 </div>
