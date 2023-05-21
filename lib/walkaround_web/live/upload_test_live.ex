@@ -38,7 +38,8 @@ defmodule WalkaroundWeb.UploadTestLive do
         # The `static/uploads` directory must exist for `File.cp!/2`
         # and MyAppWeb.static_paths/0 should contain uploads to work,.
         File.cp!(path, dest)
-        {:ok, ~p"/uploads/#{Path.basename(dest)}"} |> IO.inspect()
+        # {:ok, ~p"/uploads/#{Path.basename(dest)}"} |> IO.inspect()
+        :ok
       end)
 
     {:noreply, update(socket, :uploaded_files, &(&1 ++ uploaded_files))}

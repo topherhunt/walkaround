@@ -7,6 +7,13 @@
 # General application configuration
 import Config
 
+defmodule H do
+  def env!(key), do: System.get_env(key) || raise("Env var '#{key}' is missing!")
+end
+
+# Automatically load sensitive environment variables for dev and test
+if File.exists?("config/secrets.exs"), do: import_config("secrets.exs")
+
 config :walkaround,
   ecto_repos: [Walkaround.Repo]
 
@@ -51,8 +58,25 @@ config :tailwind,
     cd: Path.expand("../assets", __DIR__)
   ]
 
+# See https://github.com/stavro/arc#configuration
+config :arc,
+  storage: Arc.Storage.S3,
+  bucket: H.env!("AWS_S3_BUCKET")
+
+config :ex_aws,
+  # debug_requests: true,
+  access_key_id: H.env!("AWS_ACCESS_KEY_ID"),
+  secret_access_key: H.env!("AWS_SECRET_ACCESS_KEY"),
+  region: H.env!("AWS_S3_REGION"),
+  s3: [
+    scheme: "https://",
+    host: "s3.#{H.env!("AWS_S3_REGION")}.amazonaws.com",
+    region: H.env!("AWS_S3_REGION")
+  ]
+
 # Configures Elixir's Logger
 config :logger, :console,
+  level: if(System.get_env("DEBUG") == "true", do: :debug, else: :info),
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 

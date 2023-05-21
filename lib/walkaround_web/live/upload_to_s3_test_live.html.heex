@@ -1,0 +1,67 @@
+<div class="mx-auto" style="max-width: 800px;">
+  <div class="row">
+    <div class="col-6">
+      <h3>Upload an image here</h3>
+
+      <div style="height: 100px; border: 1px solid red;" phx-drop-target={@uploads.image.ref}>
+        Drag & drop image here
+      </div>
+      Status:
+      <%= for entry <- @uploads.image.entries do %>
+        <.live_img_preview entry={entry} />
+        <em><%= entry.client_name %></em>
+        <progress value={entry.progress} max="100"><%= entry.progress %>%</progress> <%= entry.progress %>%
+        <button
+          type="button"
+          phx-click="cancel-upload"
+          phx-value-ref={entry.ref}
+          class="text-warning"
+        >
+          Cancel
+        </button>
+
+        <%= for err <- upload_errors(@uploads.image, entry) do %>
+          <p class="alert alert-danger">Error: <%= inspect(err) %></p>
+        <% end %>
+
+        <div
+          id="autosubmit-checker-div"
+          data-progress={entry.progress}
+          phx-hook="ImageUploadFormAutoSubmit"
+        >
+        </div>
+      <% end %>
+
+      <%= for err <- upload_errors(@uploads.image) do %>
+        <p class="alert alert-danger"><%= inspect(err) %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <hr />
+
+  <form id="image-upload-form" phx-submit="submit-form" phx-change="validate-image-upload">
+    <.live_file_input upload={@uploads.image} />
+    <input type="submit" class="btn btn-primary" />
+  </form>
+</div>
+
+<h3 class="pt-3">All uploaded attachments</h3>
+
+<%= for attachment <- @attachments do %>
+  <div>
+    ID: <%= attachment.id %>, inserted_at: <%= attachment.inserted_at %>
+    <div>
+      Original:
+      <img src={Walkaround.AttachmentImage.url({attachment.image, attachment}, :original)}>
+    </div>
+    <div>
+      Fullsize:
+      <img src={Walkaround.AttachmentImage.url({attachment.image, attachment}, :fullsize)}>
+    </div>
+    <div>
+      Thumb:
+      <img src={Walkaround.AttachmentImage.url({attachment.image, attachment}, :thumb)}>
+    </div>
+  </div>
+<% end %>
