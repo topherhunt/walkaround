@@ -15,7 +15,10 @@ end
 if File.exists?("config/secrets.exs"), do: import_config("secrets.exs")
 
 config :walkaround,
-  ecto_repos: [Walkaround.Repo]
+  ecto_repos: [Walkaround.Repo],
+  # Don't reference Mix.env() anywhere else in the codebase.
+  # Instead use Walkaround.Helpers.env().
+  mix_env: Mix.env()
 
 # Configures the endpoint
 config :walkaround, WalkaroundWeb.Endpoint,
@@ -58,21 +61,7 @@ config :tailwind,
     cd: Path.expand("../assets", __DIR__)
   ]
 
-# See https://github.com/stavro/arc#configuration
-config :arc,
-  storage: Arc.Storage.S3,
-  bucket: H.env!("AWS_S3_BUCKET")
-
-config :ex_aws,
-  # debug_requests: true,
-  access_key_id: H.env!("AWS_ACCESS_KEY_ID"),
-  secret_access_key: H.env!("AWS_SECRET_ACCESS_KEY"),
-  region: H.env!("AWS_S3_REGION"),
-  s3: [
-    scheme: "https://",
-    host: "s3.#{H.env!("AWS_S3_REGION")}.amazonaws.com",
-    region: H.env!("AWS_S3_REGION")
-  ]
+# For arc and ex_aws config, see runtime.exs
 
 # Configures Elixir's Logger
 config :logger, :console,

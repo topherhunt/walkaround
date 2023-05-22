@@ -16,9 +16,30 @@ import Config
 #
 # Alternatively, you can use `mix phx.gen.release` to generate a `bin/server`
 # script that automatically sets the env var above.
+
+defmodule H do
+  def env!(key), do: System.get_env(key) || raise("Env var '#{key}' is missing!")
+end
+
 if System.get_env("PHX_SERVER") do
   config :walkaround, WalkaroundWeb.Endpoint, server: true
 end
+
+# See https://github.com/stavro/arc#configuration
+config :arc,
+  storage: Arc.Storage.S3,
+  bucket: H.env!("AWS_S3_BUCKET")
+
+config :ex_aws,
+  # debug_requests: true,
+  access_key_id: H.env!("AWS_ACCESS_KEY_ID"),
+  secret_access_key: H.env!("AWS_SECRET_ACCESS_KEY"),
+  region: H.env!("AWS_S3_REGION"),
+  s3: [
+    scheme: "https://",
+    host: "s3.#{H.env!("AWS_S3_REGION")}.amazonaws.com",
+    region: H.env!("AWS_S3_REGION")
+  ]
 
 if config_env() == :prod do
   database_url =

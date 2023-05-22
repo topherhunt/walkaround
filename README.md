@@ -1,21 +1,22 @@
 # Walkaround
 
-To start your Phoenix server:
+## Dev setup
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+- `mix deps.get`
+- `mix ecto.create`
+- `mix ecto.migrate`
+- `mix phx.server`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+## Deployment
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+Deploy with `fly deploy`. Migrations run automatically.
 
-## Learn more
+Live URL: https://walkaround-prod.fly.dev/
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+Some code rules apply because this app is deployed using `mix release`:
+
+- Only reference Unix env vars in runtime.exs, not config.exs.
+- Use Walkaround.Helpers.env() instead of Mix.env().
 
 
 ## AWS S3 setup

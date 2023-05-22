@@ -37,7 +37,8 @@ defmodule Walkaround.AttachmentImage do
   # WARNING: You cannot use `scope.id` if attaching to a record being inserted. You must first
   # insert the record, then attach the file in a separate changeset.
   def storage_dir(version, {_file, scope}) do
-    "uploads/#{Mix.env()}/views/#{scope.id}/#{version}"
+    env = Walkaround.Helpers.env()
+    "uploads/#{env}/views/#{scope.id}/#{version}"
   end
 
   # Provide a default URL if there hasn't been a file uploaded
