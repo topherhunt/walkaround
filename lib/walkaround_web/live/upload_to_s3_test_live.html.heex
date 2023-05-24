@@ -53,15 +53,15 @@
     ID: <%= attachment.id %>, inserted_at: <%= attachment.inserted_at %>
     <div>
       Original:
-      <img src={Walkaround.AttachmentImage.url({attachment.image, attachment}, :original)}>
+      <img src={Walkaround.Arc.AttachmentImage.url({attachment.image, attachment}, :original)}>
     </div>
     <div>
       Fullsize:
-      <img src={Walkaround.AttachmentImage.url({attachment.image, attachment}, :fullsize)}>
+      <img src={Walkaround.Arc.AttachmentImage.url({attachment.image, attachment}, :fullsize)}>
     </div>
     <div>
       Thumb:
-      <img src={Walkaround.AttachmentImage.url({attachment.image, attachment}, :thumb)}>
+      <img src={Walkaround.Arc.AttachmentImage.url({attachment.image, attachment}, :thumb)}>
     </div>
   </div>
 <% end %>

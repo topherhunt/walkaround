@@ -3,7 +3,7 @@ defmodule Walkaround.Data.Attachment do
   use Arc.Ecto.Schema
 
   schema "attachments" do
-    field(:image, Walkaround.AttachmentImage.Type)
+    field(:image, Walkaround.Arc.AttachmentImage.Type)
     timestamps()
   end
 

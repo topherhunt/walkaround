@@ -52,13 +52,21 @@ defmodule Walkaround.MixProject do
       {:plug_cowboy, "~> 2.5"},
 
       # For image attachments stored in S3/R2
-      arc: "~> 0.11.0",
-      arc_ecto: "~> 0.11.3",
-      ex_aws: "~> 2.0",
-      ex_aws_s3: "~> 2.0",
-      hackney: "~> 1.6",
-      poison: "~> 3.1",
-      sweet_xml: "~> 0.6"
+      {:arc, "~> 0.11.0"},
+      {:arc_ecto, "~> 0.11.3"},
+      {:ex_aws, "~> 2.0"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:hackney, "~> 1.6"},
+      {:poison, "~> 3.1"},
+      {:sweet_xml, "~> 0.6"},
+
+      # Other
+      {:argon2_elixir, "~> 2.3"},
+      # Looks like Phoenix auto includes Swoosh emailer, but I'll stick w Bamboo for now.
+      {:bamboo, "~> 1.3"},
+      {:bamboo_smtp, "~> 3.0"},
+      {:nanoid, "~> 2.0"},
+      {:timex, "~> 3.6"}
     ]
   end
 

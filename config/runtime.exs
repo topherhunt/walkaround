@@ -84,6 +84,14 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  # See https://hexdocs.pm/bamboo_smtp/Bamboo.SMTPAdapter.html#module-example-config
+  config :walkaround, Walkaround.Mailer,
+    adapter: Bamboo.SMTPAdapter,
+    server: H.env!("SMTP_SERVER"),
+    username: H.env!("SMTP_USERNAME"),
+    password: H.env!("SMTP_PASSWORD"),
+    port: 587
+
   # ## SSL Support
   #
   # To get SSL working, you will need to add the `https` key

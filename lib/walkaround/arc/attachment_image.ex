@@ -1,4 +1,9 @@
-defmodule Walkaround.AttachmentImage do
+defmodule Walkaround.Arc.AttachmentImage do
+  @moduledoc """
+  Uploader for Attachment.image, a test schema which won't be used in the real app.
+  Left here for reference.
+  """
+
   use Arc.Definition
   use Arc.Ecto.Definition
 
@@ -38,7 +43,7 @@ defmodule Walkaround.AttachmentImage do
   # insert the record, then attach the file in a separate changeset.
   def storage_dir(version, {_file, scope}) do
     env = Walkaround.Helpers.env()
-    "uploads/#{env}/views/#{scope.id}/#{version}"
+    "uploads/#{env}/attachments/#{scope.id}/#{version}"
   end
 
   # Provide a default URL if there hasn't been a file uploaded

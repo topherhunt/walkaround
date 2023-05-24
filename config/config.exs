@@ -72,6 +72,12 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# By default, sent emails are captured in a local process for later inspection.
+# Example:
+#   Walkaround.AdminEmails.unknown_heats() |> Walkaround.Mailer.deliver_now()
+#   Bamboo.SentEmail.all() # => a list having one %Bamboo.Email{} struct
+config :walkaround, Walkaround.Mailer, adapter: Bamboo.LocalAdapter
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

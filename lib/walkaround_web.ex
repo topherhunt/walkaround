@@ -44,6 +44,7 @@ defmodule WalkaroundWeb do
 
       import Plug.Conn
       import WalkaroundWeb.Gettext
+      import WalkaroundWeb.AuthPlugs, only: [must_be_logged_in: 2]
 
       unquote(verified_routes())
     end
@@ -69,6 +70,9 @@ defmodule WalkaroundWeb do
   def html do
     quote do
       use Phoenix.Component
+      import Phoenix.HTML.Form
+      import Phoenix.HTML.Tag
+      import Phoenix.HTML.Link
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -86,6 +90,7 @@ defmodule WalkaroundWeb do
       # Core UI components and translation
       import WalkaroundWeb.CoreComponents
       import WalkaroundWeb.Gettext
+      import WalkaroundWeb.HelperHTML
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
