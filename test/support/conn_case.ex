@@ -28,6 +28,9 @@ defmodule WalkaroundWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import WalkaroundWeb.ConnCase
+      import WalkaroundWeb.ConnHelpers
+      import WalkaroundWeb.EmailHelpers
+      alias Walkaround.{Factory, Repo}
     end
   end
 

@@ -6,10 +6,10 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :walkaround, Walkaround.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "topherhunt",
+  password: "",
   hostname: "localhost",
-  database: "walkaround_test#{System.get_env("MIX_TEST_PARTITION")}",
+  database: "walkaround_test",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
 

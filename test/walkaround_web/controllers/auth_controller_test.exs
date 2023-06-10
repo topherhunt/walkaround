@@ -10,7 +10,7 @@ defmodule WalkaroundWeb.AuthControllerTest do
 
   describe "#signup" do
     test "renders correctly", %{conn: conn} do
-      conn = get(conn, Routes.auth_path(conn, :signup))
+      conn = get(conn, ~p"/auth/signup")
 
       assert_selector(conn, "h1", html: "Sign up")
     end
@@ -29,9 +29,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
         }
       }
 
-      conn = post(conn, Routes.auth_path(conn, :signup_submit), params)
+      conn = post(conn, ~p"/auth/signup", params)
 
-      assert redirected_to(conn) =~ Routes.page_path(conn, :index)
+      assert redirected_to(conn) =~ ~p"/"
       assert User.filter(email: "topher@example.com") |> Repo.count() == 1
       assert_email_sent(to: "topher@example.com", subject: "Please confirm your address")
       # you aren't logged in, email confirmation is required
@@ -48,7 +48,7 @@ defmodule WalkaroundWeb.AuthControllerTest do
         }
       }
 
-      conn = post(conn, Routes.auth_path(conn, :signup_submit), params)
+      conn = post(conn, ~p"/auth/signup", params)
 
       assert_text(conn, "can't be blank")
       assert User.filter(email: "topher@example.com") |> Repo.count() == 0
@@ -65,7 +65,7 @@ defmodule WalkaroundWeb.AuthControllerTest do
         }
       }
 
-      conn = post(conn, Routes.auth_path(conn, :signup_submit), params)
+      conn = post(conn, ~p"/auth/signup", params)
 
       assert_text(conn, "doesn't match password")
       assert User.filter(email: "topher@example.com") |> Repo.count() == 0
@@ -75,7 +75,7 @@ defmodule WalkaroundWeb.AuthControllerTest do
 
   describe "#login" do
     test "renders correctly", %{conn: conn} do
-      conn = get(conn, Routes.auth_path(conn, :login))
+      conn = get(conn, ~p"/auth/login")
 
       assert_selector(conn, "h1", html: "Log in")
     end
@@ -86,9 +86,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
       user = Factory.insert_user()
 
       params = %{"user" => %{"email" => user.email, "password" => "password"}}
-      conn = post(conn, Routes.auth_path(conn, :login_submit), params)
+      conn = post(conn, ~p"/auth/login", params)
 
-      assert redirected_to(conn) == Routes.page_path(conn, :index)
+      assert redirected_to(conn) == ~p"/"
       assert_logged_in(conn, user)
     end
 
@@ -100,9 +100,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
       end)
 
       params = %{"user" => %{"email" => user.email, "password" => "password"}}
-      conn = post(conn, Routes.auth_path(conn, :login_submit), params)
+      conn = post(conn, ~p"/auth/login", params)
 
-      assert redirected_to(conn) == Routes.auth_path(conn, :login)
+      assert redirected_to(conn) == ~p"/auth/login"
       assert flash_messages(conn) =~ "Your account is locked."
       assert_logged_out(conn)
     end
@@ -111,9 +111,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
       user = Factory.insert_user()
 
       params = %{"user" => %{"email" => user.email, "password" => "passwrd"}}
-      conn = post(conn, Routes.auth_path(conn, :login_submit), params)
+      conn = post(conn, ~p"/auth/login", params)
 
-      assert redirected_to(conn) == Routes.auth_path(conn, :login)
+      assert redirected_to(conn) == ~p"/auth/login"
       assert flash_messages(conn) =~ "That email or password is incorrect."
       assert_logged_out(conn)
     end
@@ -122,9 +122,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
       user = Factory.insert_user(confirmed_at: nil)
 
       params = %{"user" => %{"email" => user.email, "password" => "password"}}
-      conn = post(conn, Routes.auth_path(conn, :login_submit), params)
+      conn = post(conn, ~p"/auth/login", params)
 
-      assert redirected_to(conn) == Routes.auth_path(conn, :request_email_confirm)
+      assert redirected_to(conn) == ~p"/auth/request_email_confirm"
       assert flash_messages(conn) =~ "You need to confirm your email address"
       assert_logged_out(conn)
     end
@@ -136,16 +136,16 @@ defmodule WalkaroundWeb.AuthControllerTest do
       conn = login(conn, user)
       assert_logged_in(conn, user)
 
-      conn = get(conn, Routes.auth_path(conn, :logout))
+      conn = get(conn, ~p"/auth/logout")
 
-      assert redirected_to(conn) == Routes.page_path(conn, :index)
+      assert redirected_to(conn) == ~p"/"
       assert_logged_out(conn)
     end
   end
 
   describe "#request_email_confirm" do
     test "renders correctly", %{conn: conn} do
-      conn = get(conn, Routes.auth_path(conn, :request_email_confirm))
+      conn = get(conn, ~p"/auth/request_email_confirm")
 
       assert_selector(conn, "h1", html: "Confirm your account")
     end
@@ -156,9 +156,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
       user = Factory.insert_user(confirmed_at: nil)
 
       params = %{"user" => %{"email" => user.email}}
-      conn = post(conn, Routes.auth_path(conn, :request_email_confirm_submit), params)
+      conn = post(conn, ~p"/auth/request_email_confirm", params)
 
-      assert redirected_to(conn) == Routes.auth_path(conn, :request_email_confirm)
+      assert redirected_to(conn) == ~p"/auth/request_email_confirm"
       assert count_emails_sent() == 1
       assert_email_sent(to: user.email, subject: "Please confirm your address")
     end
@@ -167,9 +167,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
       _user = Factory.insert_user()
 
       params = %{"user" => %{"email" => "incorrect@example.com"}}
-      conn = post(conn, Routes.auth_path(conn, :request_email_confirm_submit), params)
+      conn = post(conn, ~p"/auth/request_email_confirm", params)
 
-      assert redirected_to(conn) == Routes.auth_path(conn, :request_email_confirm)
+      assert redirected_to(conn) == ~p"/auth/request_email_confirm"
       assert flash_messages(conn) =~ "doesn't exist in our system"
       assert count_emails_sent() == 0
     end
@@ -180,9 +180,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
       user = Factory.insert_user(confirmed_at: nil)
 
       token = Data.create_token!({:confirm_email, user.id, user.email})
-      conn = get(conn, Routes.auth_path(conn, :confirm_email), %{"token" => token})
+      conn = get(conn, ~p"/auth/confirm_email", %{"token" => token})
 
-      assert redirected_to(conn) == Routes.page_path(conn, :index)
+      assert redirected_to(conn) == ~p"/"
       assert flash_messages(conn) == "Thanks! Your email address is confirmed."
       assert_logged_in(conn, user)
     end
@@ -191,9 +191,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
       user = Factory.insert_user(confirmed_at: nil)
 
       token = Data.create_token!({:confirm_email, user.id, user.email}) <> "z"
-      conn = get(conn, Routes.auth_path(conn, :confirm_email), %{"token" => token})
+      conn = get(conn, ~p"/auth/confirm_email", %{"token" => token})
 
-      assert redirected_to(conn) == Routes.auth_path(conn, :request_email_confirm)
+      assert redirected_to(conn) == ~p"/auth/request_email_confirm"
       assert flash_messages(conn) =~ "That link is no longer valid."
       assert_logged_out(conn)
     end
@@ -201,7 +201,7 @@ defmodule WalkaroundWeb.AuthControllerTest do
 
   describe "#request_password_reset" do
     test "renders correctly", %{conn: conn} do
-      conn = get(conn, Routes.auth_path(conn, :request_password_reset))
+      conn = get(conn, ~p"/auth/request_password_reset")
 
       assert_selector(conn, "h1", html: "Reset your password")
     end
@@ -212,9 +212,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
       user = Factory.insert_user()
 
       params = %{"user" => %{"email" => user.email}}
-      conn = post(conn, Routes.auth_path(conn, :request_password_reset_submit), params)
+      conn = post(conn, ~p"/auth/request_password_reset", params)
 
-      assert redirected_to(conn) == Routes.auth_path(conn, :request_password_reset)
+      assert redirected_to(conn) == ~p"/auth/request_password_reset"
       assert count_emails_sent() == 1
       assert_email_sent(to: user.email, subject: "Use this link to reset your password")
     end
@@ -223,9 +223,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
       _user = Factory.insert_user()
 
       params = %{"user" => %{"email" => "incorrect@example.com"}}
-      conn = post(conn, Routes.auth_path(conn, :request_password_reset_submit), params)
+      conn = post(conn, ~p"/auth/request_password_reset", params)
 
-      assert redirected_to(conn) == Routes.auth_path(conn, :request_password_reset)
+      assert redirected_to(conn) == ~p"/auth/request_password_reset"
       assert flash_messages(conn) =~ "doesn't exist in our system"
       assert count_emails_sent() == 0
     end
@@ -236,7 +236,7 @@ defmodule WalkaroundWeb.AuthControllerTest do
       user = Factory.insert_user()
 
       token = Data.create_token!({:reset_password, user.id})
-      conn = get(conn, Routes.auth_path(conn, :reset_password), %{"token" => token})
+      conn = get(conn, ~p"/auth/reset_password", %{"token" => token})
 
       assert_selector(conn, "h1", html: "Reset your password")
       assert_selector(conn, "input#user_password_confirmation")
@@ -246,9 +246,9 @@ defmodule WalkaroundWeb.AuthControllerTest do
       user = Factory.insert_user()
       token = Data.create_token!({:reset_password, user.id}) <> "z"
 
-      conn = get(conn, Routes.auth_path(conn, :reset_password), %{"token" => token})
+      conn = get(conn, ~p"/auth/reset_password", %{"token" => token})
 
-      assert redirected_to(conn) == Routes.auth_path(conn, :request_password_reset)
+      assert redirected_to(conn) == ~p"/auth/request_password_reset"
       assert flash_messages(conn) =~ "That link is no longer valid."
     end
   end
@@ -259,12 +259,12 @@ defmodule WalkaroundWeb.AuthControllerTest do
       token = Data.create_token!({:reset_password, user.id})
 
       conn =
-        post(conn, Routes.auth_path(conn, :reset_password_submit), %{
+        post(conn, ~p"/auth/reset_password", %{
           "token" => token,
           "user" => %{"password" => "password2", "password_confirmation" => "password2"}
         })
 
-      assert redirected_to(conn) == Routes.auth_path(conn, :login)
+      assert redirected_to(conn) == ~p"/auth/login"
       assert flash_messages(conn) == "Password updated. Please log in."
       assert Repo.get!(User, user.id) |> Data.password_correct?("password2")
     end
@@ -274,12 +274,12 @@ defmodule WalkaroundWeb.AuthControllerTest do
       token = Data.create_token!({:reset_password, user.id}) <> "z"
 
       conn =
-        post(conn, Routes.auth_path(conn, :reset_password_submit), %{
+        post(conn, ~p"/auth/reset_password", %{
           "token" => token,
           "user" => %{"password" => "password2", "password_confirmation" => "password2"}
         })
 
-      assert redirected_to(conn) == Routes.auth_path(conn, :request_password_reset)
+      assert redirected_to(conn) == ~p"/auth/request_password_reset"
       assert flash_messages(conn) == "Sorry, something went wrong. Please try again."
       assert !(Repo.get!(User, user.id) |> Data.password_correct?("password2"))
     end
@@ -289,7 +289,7 @@ defmodule WalkaroundWeb.AuthControllerTest do
       token = Data.create_token!({:reset_password, user.id})
 
       conn =
-        post(conn, Routes.auth_path(conn, :reset_password_submit), %{
+        post(conn, ~p"/auth/reset_password", %{
           "token" => token,
           "user" => %{"password" => "password2", "password_confirmation" => "password3"}
         })

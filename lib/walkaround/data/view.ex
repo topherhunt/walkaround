@@ -3,6 +3,8 @@ defmodule Walkaround.Data.View do
   use Arc.Ecto.Schema
   import Ecto.Changeset
   import Ecto.Query
+  alias Walkaround.Repo
+  alias __MODULE__
 
   schema "views" do
     field(:position, :integer)

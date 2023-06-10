@@ -49,7 +49,7 @@
 
   <h3 class="mt-5"><%= gettext("Change my email address") %></h3>
 
-  <%= form_for @changeset, Routes.user_path(@conn, :update_email), [method: :patch], fn f -> %>
+  <%= form_for @changeset, ~p"/account/update_email", [method: :patch], fn f -> %>
     <div class="form-group">
       <%= label(f, :email, gettext("Email")) %>
       <%= email_input(f, :email, class: "form-control", required: true) %>

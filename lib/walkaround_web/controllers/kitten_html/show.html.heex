@@ -1,0 +1,15 @@
+<.header>
+  Kitten <%= @kitten.id %>
+  <:subtitle>This is a kitten record from your database.</:subtitle>
+  <:actions>
+    <.link href={~p"/kittens/#{@kitten}/edit"}>
+      <.button>Edit kitten</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @kitten.name %></:item>
+</.list>
+
+<.back navigate={~p"/kittens"}>Back to kittens</.back>

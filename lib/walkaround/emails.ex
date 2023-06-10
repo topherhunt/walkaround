@@ -1,7 +1,7 @@
 defmodule Walkaround.Emails do
   use Bamboo.Phoenix, view: WalkaroundWeb.EmailsView
+  use WalkaroundWeb, :verified_routes
   import Bamboo.Email
-  alias WalkaroundWeb.Router.Helpers, as: Routes
   alias Walkaround.Data
   alias Walkaround.Data.User
   require Logger
@@ -10,7 +10,7 @@ defmodule Walkaround.Emails do
 
   def confirm_address(%User{} = user, email) do
     token = Data.create_token!({:confirm_email, user.id, email})
-    url = Routes.auth_url(@endpoint, :confirm_email, token: token)
+    url = ~p"/auth/confirm_email?token=#{token}"
     if Mix.env() == :dev, do: Logger.info("Email confirmation link sent to #{email}: #{url}")
 
     standard_email()
@@ -21,7 +21,7 @@ defmodule Walkaround.Emails do
 
   def reset_password(%User{} = user) do
     token = Data.create_token!({:reset_password, user.id})
-    url = Routes.auth_url(@endpoint, :reset_password, token: token)
+    url = ~p"/auth/reset_password?token=#{token}"
     if Mix.env() == :dev, do: Logger.info("PW reset link sent to #{user.email}: #{url}")
 
     standard_email()

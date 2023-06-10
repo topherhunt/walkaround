@@ -45,6 +45,7 @@ defmodule WalkaroundWeb do
       import Plug.Conn
       import WalkaroundWeb.Gettext
       import WalkaroundWeb.AuthPlugs, only: [must_be_logged_in: 2]
+      alias Walkaround.Repo
 
       unquote(verified_routes())
     end

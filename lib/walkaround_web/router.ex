@@ -49,6 +49,8 @@ defmodule WalkaroundWeb.Router do
     live "/transitions_test", TransitionsTestLive
     live "/upload_test", UploadTestLive
     live "/upload_to_s3_test", UploadToS3TestLive
+
+    resources "/kittens", KittenController
   end
 
   # Other scopes may use custom stacks.
