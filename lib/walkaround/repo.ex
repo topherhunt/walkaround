@@ -17,4 +17,13 @@ defmodule Walkaround.Repo do
       {:error, changeset} -> raise Ecto.InvalidChangesetError, changeset: changeset
     end
   end
+
+  def generate_slug(changeset) do
+    if Ecto.Changeset.get_field(changeset, :slug) == nil do
+      # 12 digits in a 64-char alphabet is 4.7e21 entropy -- more than I'll ever need.
+      Ecto.Changeset.put_change(changeset, :slug, Nanoid.generate(12))
+    else
+      changeset
+    end
+  end
 end

@@ -7,6 +7,7 @@ defmodule Walkaround.Data.View do
   alias __MODULE__
 
   schema "views" do
+    field(:slug, :string)
     field(:position, :integer)
     field(:image, Walkaround.Arc.Image.Type)
     field(:image_peek_up, Walkaround.Arc.Image.Type)
@@ -31,6 +32,7 @@ defmodule Walkaround.Data.View do
     |> set_previous_position()
     |> set_default_position()
     |> validate_required([:node_id, :position])
+    |> Walkaround.Repo.generate_slug()
   end
 
   # You can't attach ArcEcto files to a record that hasn't been inserted yet.

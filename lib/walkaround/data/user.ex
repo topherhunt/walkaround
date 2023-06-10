@@ -5,6 +5,7 @@ defmodule Walkaround.Data.User do
   alias Walkaround.Data
 
   schema "users" do
+    field(:slug, :string)
     field(:name, :string)
     field(:email, :string)
     field(:password, :string, virtual: true)
@@ -28,6 +29,7 @@ defmodule Walkaround.Data.User do
     |> downcase_field(:email)
     |> require_password()
     |> hash_password_if_present()
+    |> Walkaround.Repo.generate_slug()
   end
 
   def changeset(struct, params, :owner) do

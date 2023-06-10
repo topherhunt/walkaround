@@ -3,6 +3,7 @@ defmodule Walkaround.Data.Node do
   import Ecto.Changeset
 
   schema "nodes" do
+    field(:slug, :string)
     belongs_to(:place, Walkaround.Data.Place)
 
     timestamps()
@@ -12,5 +13,6 @@ defmodule Walkaround.Data.Node do
     place
     |> cast(attrs, [:place_id])
     |> validate_required([:place_id])
+    |> Walkaround.Repo.generate_slug()
   end
 end

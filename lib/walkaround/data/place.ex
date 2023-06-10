@@ -3,8 +3,9 @@ defmodule Walkaround.Data.Place do
   import Ecto.Changeset
 
   schema "places" do
-    field(:description, :string)
+    field(:slug, :string)
     field(:name, :string)
+    field(:description, :string)
 
     belongs_to(:user, Walkaround.Data.User)
 
@@ -16,5 +17,6 @@ defmodule Walkaround.Data.Place do
     |> cast(attrs, [:user_id, :name, :description])
     |> validate_required([:user_id, :name])
     |> validate_length(:name, max: 250)
+    |> Walkaround.Repo.generate_slug()
   end
 end

@@ -13,7 +13,7 @@ defmodule WalkaroundWeb.UserControllerTest do
       user = Factory.insert_user()
       conn = login(conn, user)
 
-      conn = get(conn, Routes.user_path(conn, :edit))
+      conn = get(conn, ~p"/account/edit")
 
       assert_selector(conn, "h1", html: "Account settings")
     end
@@ -33,9 +33,9 @@ defmodule WalkaroundWeb.UserControllerTest do
         }
       }
 
-      conn = patch(conn, Routes.user_path(conn, :update), params)
+      conn = patch(conn, ~p"/account/update", params)
 
-      assert redirected_to(conn) == Routes.user_path(conn, :edit)
+      assert redirected_to(conn) == ~p"/account/edit"
       updated_user = Repo.get!(User, user.id)
       assert updated_user.name == "New name"
       assert Data.password_correct?(updated_user, "password2")
@@ -46,9 +46,9 @@ defmodule WalkaroundWeb.UserControllerTest do
       conn = login(conn, user)
 
       params = %{"user" => %{"name" => "New name"}}
-      conn = patch(conn, Routes.user_path(conn, :update), params)
+      conn = patch(conn, ~p"/account/update", params)
 
-      assert redirected_to(conn) == Routes.user_path(conn, :edit)
+      assert redirected_to(conn) == ~p"/account/edit"
       # Name has changed
       assert Repo.get!(User, user.id).name == "New name"
     end
@@ -58,7 +58,7 @@ defmodule WalkaroundWeb.UserControllerTest do
       conn = login(conn, user)
 
       params = %{"user" => %{"name" => ""}}
-      conn = patch(conn, Routes.user_path(conn, :update), params)
+      conn = patch(conn, ~p"/account/update", params)
 
       assert_text(conn, "can't be blank")
       # Name hasn't changed
@@ -78,7 +78,7 @@ defmodule WalkaroundWeb.UserControllerTest do
         }
       }
 
-      conn = patch(conn, Routes.user_path(conn, :update), params)
+      conn = patch(conn, ~p"/account/update", params)
 
       assert_text(conn, "is incorrect")
       # PW hasn't changed
@@ -92,9 +92,9 @@ defmodule WalkaroundWeb.UserControllerTest do
       conn = login(conn, user)
 
       params = %{"user" => %{"email" => "new_email@example.com"}}
-      conn = patch(conn, Routes.user_path(conn, :update_email), params)
+      conn = patch(conn, ~p"/account/update_email", params)
 
-      assert redirected_to(conn) == Routes.user_path(conn, :edit)
+      assert redirected_to(conn) == ~p"/account/edit"
       assert flash_messages(conn) =~ "We just sent a confirmation link"
       # email hasn't changed (yet)
       assert Repo.get!(User, user.id).email == user.email
@@ -107,9 +107,9 @@ defmodule WalkaroundWeb.UserControllerTest do
       conn = login(conn, user)
 
       params = %{"user" => %{"email" => user2.email}}
-      conn = patch(conn, Routes.user_path(conn, :update_email), params)
+      conn = patch(conn, ~p"/account/update_email", params)
 
-      assert redirected_to(conn) == Routes.user_path(conn, :edit)
+      assert redirected_to(conn) == ~p"/account/edit"
       assert flash_messages(conn) =~ "The email address #{user2.email} is already taken"
     end
   end
